@@ -36,29 +36,32 @@ class NetworkScanner:
         sys.stdout.write("Starting Network Search \n")
 
         for outerKey in ifcfg.interfaces().keys():
-            # print(key, values)
-            # print("\n")
+
             sys.stdout.write(self.__printZone + "\n")
             sys.stdout.write(outerKey + "\n")
+
             for key, values in ifcfg.interfaces()[outerKey].items():
                 sys.stdout.write(key + ": ")
+
                 try:
                     for value in values:
                         sys.stdout.write(value)
                 except TypeError: # key has no value
                     sys.stdout.write("None")
+
                 sys.stdout.write("\n")
+
             sys.stdout.write(self.__printZone + "\n")
 
 
 if __name__ == "__main__":
     netscan = NetworkScanner(inputPortRange=(0, 50))
+
     # in the background, scan all available ports on machine within range listed
     scanthread = threading.Thread(target=netscan.search_ports, daemon=True)
     scanthread.start()
     
     netscan.search_network()
-    
     
     for line in sys.stdin:
         print(line, end="")
